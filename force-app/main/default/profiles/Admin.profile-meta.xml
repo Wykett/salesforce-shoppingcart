@@ -13,6 +13,11 @@
         <enabled>true</enabled>
     </classAccesses>
     <custom>false</custom>
+    <fieldPermissions>
+        <editable>true</editable>
+        <field>CatalogProduct__c.Picture__c</field>
+        <readable>true</readable>
+    </fieldPermissions>
     <layoutAssignments>
         <layout>CatalogProduct__c-CatalogProduct Layout</layout>
     </layoutAssignments>
