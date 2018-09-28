@@ -1,7 +1,7 @@
 public class ShoppingCart {
-    public List<Product2> products {get; set;}
+    public List<CatalogProduct__c> products {get; set;}
 
     public ShoppingCart() {
-        products = new List<Product2>();
+        products = new List<CatalogProduct__c>();
     }
 }
