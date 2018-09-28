@@ -1,9 +1,9 @@
 public class ShoppingCart {
-    public List<CatalogProduct__c> products {get; set;}
+    public Map<Id, ShoppingCartItem> cartItemMap {get; set;}
     public Double totalPrice {get; set;}
 
     public ShoppingCart() {
-        products = new List<CatalogProduct__c>();
+        cartItemMap = new Map<Id, ShoppingCartItem>();
         totalPrice = 0;
     }
 }
