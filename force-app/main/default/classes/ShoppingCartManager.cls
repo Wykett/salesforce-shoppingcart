@@ -11,5 +11,15 @@ public with sharing class ShoppingCartManager {
                                     FROM CatalogProduct__c
                                     WHERE Id = :productId];
         cart.products.add(product);
+        calculateCartTotalPrice();
     }
+
+    private void calculateCartTotalPrice() {
+        Double totalPrice = 0;
+        for (CatalogProduct__c product : cart.products) {
+            totalPrice += product.Price__c;
+        }
+        cart.totalPrice = totalPrice;
+    }
+
 }

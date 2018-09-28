@@ -33,5 +33,6 @@ public with sharing class ShoppingCartManagerTest {
         ShoppingCart actual = cartManager.cart;
 
         System.assertEquals(1, actual.products.size());
+        System.assertEquals(100, actual.totalPrice);
     }
 }
