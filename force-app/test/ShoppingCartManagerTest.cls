@@ -75,4 +75,25 @@ public with sharing class ShoppingCartManagerTest {
         System.assertEquals(2, actual.cartItemMap.get(product.Id).quantity);
         System.assertEquals(200, actual.totalPrice);
     }
+
+    @isTest
+    public static void test_given_add_2_products_add_3_5_quantity_expect_cart_total_price_1300() {
+        ShoppingCartManager cartManager = new ShoppingCartManager();
+        CatalogProduct__c product = [SELECT Id FROM CatalogProduct__c WHERE Name = 'Product test 1' LIMIT 1];
+        cartManager.addProductById(product.Id);
+        cartManager.increaseQuantityOfProduct(product.Id);
+        cartManager.increaseQuantityOfProduct(product.Id);
+        CatalogProduct__c product2 = [SELECT Id FROM CatalogProduct__c WHERE Name = 'Product test 2' LIMIT 1];
+        cartManager.addProductById(product2.Id);
+        cartManager.increaseQuantityOfProduct(product2.Id);
+        cartManager.increaseQuantityOfProduct(product2.Id);
+        cartManager.increaseQuantityOfProduct(product2.Id);
+        cartManager.increaseQuantityOfProduct(product2.Id);
+        ShoppingCart actual = cartManager.cart;
+
+        System.assertEquals(2, actual.cartItemMap.size());
+        System.assertEquals(3, actual.cartItemMap.get(product.Id).quantity);
+        System.assertEquals(5, actual.cartItemMap.get(product2.Id).quantity);
+        System.assertEquals(1300, actual.totalPrice);
+    }
 }
