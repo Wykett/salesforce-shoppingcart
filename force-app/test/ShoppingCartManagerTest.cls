@@ -27,18 +27,7 @@ public with sharing class ShoppingCartManagerTest {
     }
 
     @isTest
-    public static void test_given_one_product_price_100_expect_cart_total_price_100() {
-        ShoppingCartManager cartManager = new ShoppingCartManager();
-        CatalogProduct__c product = [SELECT Id FROM CatalogProduct__c WHERE Name = 'Product test 1' LIMIT 1];
-        cartManager.addProductById(product.Id);
-        ShoppingCart actual = cartManager.cart;
-
-        System.assertEquals(1, actual.cartItemMap.size());
-        System.assertEquals(100, actual.totalPrice);
-    }
-
-    @isTest
-    public static void test_given_product_price_100_other_200_expect_cart_total_price_300() {
+    public static void test_given_2_different_products_expect_cart_size_2() {
         ShoppingCartManager cartManager = new ShoppingCartManager();
         CatalogProduct__c product = [SELECT Id FROM CatalogProduct__c WHERE Name = 'Product test 1' LIMIT 1];
         cartManager.addProductById(product.Id);
@@ -47,11 +36,10 @@ public with sharing class ShoppingCartManagerTest {
         ShoppingCart actual = cartManager.cart;
 
         System.assertEquals(2, actual.cartItemMap.size());
-        System.assertEquals(300, actual.totalPrice);
     }
 
     @isTest
-    public static void test_given_add_2_times_same_expect_cart_total_price_200() {
+    public static void test_given_add_2_times_same_expect_cart_size_1_qty_2() {
         ShoppingCartManager cartManager = new ShoppingCartManager();
         CatalogProduct__c product = [SELECT Id FROM CatalogProduct__c WHERE Name = 'Product test 1' LIMIT 1];
         cartManager.addProductById(product.Id);
@@ -60,24 +48,10 @@ public with sharing class ShoppingCartManagerTest {
 
         System.assertEquals(1, actual.cartItemMap.size());
         System.assertEquals(2, actual.cartItemMap.get(product.Id).quantity);
-        System.assertEquals(200, actual.totalPrice);
     }
 
     @isTest
-    public static void test_given_add_1_add_2_quantity_expect_cart_total_price_300() {
-        ShoppingCartManager cartManager = new ShoppingCartManager();
-        CatalogProduct__c product = [SELECT Id FROM CatalogProduct__c WHERE Name = 'Product test 1' LIMIT 1];
-        cartManager.addProductById(product.Id);
-        cartManager.increaseQuantityOfProduct(product.Id);
-        ShoppingCart actual = cartManager.cart;
-
-        System.assertEquals(1, actual.cartItemMap.size());
-        System.assertEquals(2, actual.cartItemMap.get(product.Id).quantity);
-        System.assertEquals(200, actual.totalPrice);
-    }
-
-    @isTest
-    public static void test_given_add_2_products_add_3_5_quantity_expect_cart_total_price_1300() {
+    public static void test_given_add_2_products_add_3_5_quantity_expect_cart_size_2_qty_3_and_5() {
         ShoppingCartManager cartManager = new ShoppingCartManager();
         CatalogProduct__c product = [SELECT Id FROM CatalogProduct__c WHERE Name = 'Product test 1' LIMIT 1];
         cartManager.addProductById(product.Id);
@@ -94,6 +68,5 @@ public with sharing class ShoppingCartManagerTest {
         System.assertEquals(2, actual.cartItemMap.size());
         System.assertEquals(3, actual.cartItemMap.get(product.Id).quantity);
         System.assertEquals(5, actual.cartItemMap.get(product2.Id).quantity);
-        System.assertEquals(1300, actual.totalPrice);
     }
 }
