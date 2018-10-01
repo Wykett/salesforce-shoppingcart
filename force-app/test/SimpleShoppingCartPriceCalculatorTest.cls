@@ -41,4 +41,24 @@ public class SimpleShoppingCartPriceCalculatorTest {
         
         System.assertEquals(300, actual);
     }
+
+    @isTest
+    public static void test_calculateShoppingCartPrice_given_products_3_100_5_200_different_products_expect_1300() {
+        SimpleShoppingCartPriceCalculator priceCalculator = new SimpleShoppingCartPriceCalculator();
+        ShoppingCartManager cartManager = new ShoppingCartManager(priceCalculator);
+        CatalogProduct__c product = [SELECT Id FROM CatalogProduct__c WHERE Name = 'Product test 1' LIMIT 1];
+        cartManager.addProductById(product.Id);
+        cartManager.increaseQuantityOfProduct(product.Id);
+        cartManager.increaseQuantityOfProduct(product.Id);
+        CatalogProduct__c product2 = [SELECT Id FROM CatalogProduct__c WHERE Name = 'Product test 2' LIMIT 1];
+        cartManager.addProductById(product2.Id);
+        cartManager.increaseQuantityOfProduct(product2.Id);
+        cartManager.increaseQuantityOfProduct(product2.Id);
+        cartManager.increaseQuantityOfProduct(product2.Id);
+        cartManager.increaseQuantityOfProduct(product2.Id);
+
+        Double actual = priceCalculator.calculateShoppingCartPrice(cartManager.cart);
+        
+        System.assertEquals(1300, actual);
+    }
 }
