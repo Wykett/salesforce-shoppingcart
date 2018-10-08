@@ -10,18 +10,37 @@ public with sharing class QtyDiscountShoppingCartCalculator implements ShoppingC
             productDiscountList = new List<ProductDiscount__c>();
         
         for (String keyProductId : cart.cartItemMap.keySet()) {
-            List<ProductDiscount__c> currentDiscount = findProductDiscountWithProductId(productDiscountList, keyProductId);
-            totalPrice += cart.cartItemMap.get(keyProductId).product.Price__c * cart.cartItemMap.get(keyProductId).quantity;
+            for (Integer currentQty = 1; currentQty <= cart.cartItemMap.get(keyProductId).quantity; currentQty++) {
+                ProductDiscount__c currentDiscount = findProductDiscountWithProductIdAndQuantity(productDiscountList, keyProductId, currentQty);
+                if (currentDiscount == null)
+                    totalPrice += cart.cartItemMap.get(keyProductId).product.Price__c;
+                else
+                    totalPrice += cart.cartItemMap.get(keyProductId).product.Price__c * (100 - currentDiscount.DiscountPercent__c) / 100;
+            }
         }
         return totalPrice;
     }
 
-public List<ProductDiscount__c> findProductDiscountWithProductId(List<ProductDiscount__c> productDiscountList, String productId) {
-    List<ProductDiscount__c> newProductDiscountList = new List<ProductDiscount__c>();
-    for (ProductDiscount__c productDiscountItem : productDiscountList)
-        if (productDiscountItem.CatalogProduct__c == productId)
-            newProductDiscountList.add(productDiscountItem);
-    return newProductDiscountList;
-}
+    public ProductDiscount__c findProductDiscountWithProductIdAndQuantity(List<ProductDiscount__c> productDiscountList, String productId, Integer currentQty) {
+        ProductDiscount__c discountFound = null;
+        for (ProductDiscount__c productDiscountItem : productDiscountList) {
+            if (productDiscountItem.CatalogProduct__c == productId) {
+                if (productDiscountItem.DiscountQuantity__c == currentQty)
+                    return productDiscountItem;
+                List<Integer> multipleList = findMultiples(currentQty);
+                if (multipleList.contains(Integer.valueOf(productDiscountItem.DiscountQuantity__c)))
+                    return productDiscountItem;
+            }
+        }
+        return discountFound;
+    }
+
+    public List<Integer> findMultiples(Integer numberToDecompose) {
+        List<Integer> multipleList = new List<Integer>();
+        for (Integer i = numberToDecompose - 1; i > 0; i--)
+            if (numberToDecompose / i == 0)
+               multipleList.add(i);
+        return multipleList;
+    }
 
 }

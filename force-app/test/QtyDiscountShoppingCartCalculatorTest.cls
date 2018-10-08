@@ -6,6 +6,10 @@ public with sharing class QtyDiscountShoppingCartCalculatorTest {
         productBulkInsert.add(new CatalogProduct__c(Name = 'Product test 1', Price__c = 100));
         productBulkInsert.add(new CatalogProduct__c(Name = 'Product test 2', Price__c = 200));
         insert productBulkInsert;
+
+        List<ProductDiscount__c> discountBulkInsert = new List<ProductDiscount__c>();
+        discountBulkInsert.add(new ProductDiscount__c(CatalogProduct__c = productBulkInsert.get(0).Id, DiscountPercent__c = 50, DiscountQuantity__c = 5));
+        insert discountBulkInsert;
     }
     
     @isTest
